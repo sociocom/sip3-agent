@@ -4,17 +4,15 @@ import { mastra } from "@/mastra"; // Adjust the import path if necessary
 export const maxDuration = 30;
 
 async function callSip3dict(text: string) {
+  const url = process.env.SIP3DICT_API_URL as string;
   //const q = text.replace(/\r?\n/g, "\\n");
   const encoded = encodeURIComponent(text);
-  const response = await fetch(
-    `https://nlp.sociocom.jp/sip3/api/entities?text=${encoded}`,
-    {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    }
-  );
+  const response = await fetch(`${url}?text=${encoded}`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
   if (response.ok) {
     const result = await response.json();
     // console.log(result);

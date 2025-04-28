@@ -37,12 +37,10 @@ npm 11.3.0 で動作確認しています。
 
 - `.env.example`ファイルをコピーして、`.env`ファイルを作成します。
 - `.env`ファイルに環境変数を設定します。  
-  現在、OpenAI は使用していないため、`OPENAI_API_KEY`はそのままで良いです。
-  以下の `LLM`という変数に`qwen2.5-14b-1m`のような LLM 名を指定します。
-
-```
-LLM=qwen2.5-14b-1m
-```
+  現在、OpenAI は使用していないため、`OPENAI_API_KEY`は設定不要です。
+  - `SIP3DICT_API_URL=<SIP3辞書APIのURL>`
+  - `LLM=<qwen2.5-14b-instruct-1mやqwen2.5-14b-instruct-mlxなどのモデル名>`
+  - `LLM`で指定したモデルは、LM Studio でロードしておく必要があります。
 
 以下のコマンドで、AI エージェントとチャット画面を立ち上げます。
 

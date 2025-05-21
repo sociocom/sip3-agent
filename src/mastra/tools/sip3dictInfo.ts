@@ -1,7 +1,19 @@
-import { mastra } from "@/mastra"; // Adjust the import path if necessary
+import { createTool } from "@mastra/core/tools";
+import { z } from "zod";
 
-// Allow streaming responses up to 30 seconds
-export const maxDuration = 30;
+export const sip3dictInfo = createTool({
+  id: "SIP3辞書でカルテ文書を解析する",
+  inputSchema: z.object({
+    text: z.string(),
+  }),
+  description: `SIP3辞書で入力のカルテ文書を解析する`,
+  execute: async ({ context: { text } }) => {
+    console.log("SIP3辞書APIを呼び出しています");
+    const d = await sip3dictAsString(text);
+    const newText = text + "\n\n# 辞書項目\n" + d;
+    return newText;
+  },
+});
 
 async function callSip3dict(text: string) {
   const url = process.env.SIP3DICT_API_URL as string;
@@ -35,23 +47,4 @@ async function sip3dictAsString(text: string) {
     strs.push(JSON.stringify(o));
   }
   return strs.join("\n");
-}
-
-export async function POST(req: Request) {
-  // Extract the messages from the request body
-  const { messages } = await req.json();
-
-  // 手動で入力文書をsip3辞書で拡張する。TODO: ベストではないので今後修正
-  const text = messages[messages.length - 1].content[0].text;
-  const s = await sip3dictAsString(text);
-  messages[messages.length - 1].content[0].text = text + "\n\n# 辞書項目\n" + s;
-
-  // Get the chefAgent instance from Mastra
-  const agent = mastra.getAgent("sip3dictAgent");
-
-  // Stream the response using the agent
-  const result = await agent.stream(messages);
-
-  // Return the result as a data stream response
-  return result.toDataStreamResponse();
 }

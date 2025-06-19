@@ -1,0 +1,14 @@
+version: '3'
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    # container_name: app
+    expose:
+      - "4111"
+    ports:
+      - "4111:4111"
+    privileged: true
+    restart: always
+    env_file: .env

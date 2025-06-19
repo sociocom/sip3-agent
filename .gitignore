@@ -1,9 +1,18 @@
-output.txt 
-node_modules 
-dist 
-.mastra 
-.env.development 
-.env 
-*.db 
-*.db-* 
-old/
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+node_modules/
+
+volume/
+venv/
+.credentials/
+.env
+.data

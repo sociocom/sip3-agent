@@ -6,14 +6,14 @@ SIP3 辞書を活用して医療文書を解析する AI エージェントで�
 ローカル LLM で動作します。  
 エージェントライブラリとして、PydanticAIを使用しています。
 
-以下の3つのサーバーがあります。
+以下の3つのサーバーを使います。
 
-- sip3-dictionary-api:
+- `sip3-dictionary-api`:
   SIP3辞書APIで、カルテ文書を解析します。ローカルでサーバーを立ち上げたい場合は、[Github](https://github.com/sociocom/sip3-dictionary-api)
-  のREADMEにしたがってインストールしてサーバーを立ち上げてください。ローカルの場合、ポート番号は7070です。
-- LM Studio: エージェントが使用するLLMのサーバーです。ポート番号は1234です。
-- AIエージェント: LLMの指示や外部ツールを利用して、質問の回答を生成します。ポート番号は4111です。
-    - `http://localhost:4111/chat` でエージェントに質問を送ります。
+  のREADMEにしたがってインストールしてサーバーを立ち上げてください。ローカルの場合、ポート番号は`7070`です。
+- `LM Studio`: エージェントが使用するLLMのサーバーです。ポート番号は`1234`です。
+- `AIエージェント`: LLMの指示や外部ツールを利用して、質問の回答を生成します。ポート番号は`4111`です。
+    - `http://localhost:4111/chat` でエージェントに指示を送ります。
 
 ## SIP3辞書サーバーのインストールと実行
 
@@ -45,10 +45,10 @@ pip install fastapi uvicorn python-dotenv pydantic-ai
 `.env`ファイルに環境変数を設定します。
 
 - `SIP3DICT_API_URL`: SIP3辞書APIのURLを指定します。基本的にはデフォルトのままで大丈夫です。
-- `LLM`: `qwen2.5-14b-instruct-1m`や`qwen2.5-14b-instruct-mlx`などのLLMを指定します。`LLM`で指定したモデルは、LM Studio
+- `LLM`: `qwen2.5-14b-instruct-1m`や`qwen2.5-14b-instruct-mlx`などのLLMを指定します。`LLM`で指定したモデルは、`LM Studio`
   でロードしておく必要があります。
 
-以下のコマンドで、エージェントを立ち上げます。
+以下のコマンドで、AIエージェントを立ち上げます。
 
 ```
 cd app
@@ -59,8 +59,15 @@ uvicorn main:app --port 4111
 
 ## テスト
 
+サンプルのカルテと質問をエージェントへ送り、回答を取得します。
+
 ```
 python test.py
 
 > {'response': 'HbA1cの値は「9.1％」です。'}
 ```
+
+## TODO
+
+* SIP3辞書の情報をカルテへ追記すると、元の質問に答えなくなってしまう問題があるので、現在は
+  SIP3辞書APIを呼び出していますが、その結果を使用していません。

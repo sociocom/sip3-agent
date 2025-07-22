@@ -11,6 +11,7 @@ SIP3 辞書を活用して医療文書を解析する AI エージェントで�
 - `sip3-dictionary-api`:
   SIP3辞書APIで、カルテ文書を解析します。ローカルでサーバーを立ち上げたい場合は、[Github](https://github.com/sociocom/sip3-dictionary-api)
   のREADMEにしたがってインストールしてサーバーを立ち上げてください。ローカルの場合、ポート番号は`7070`です。
+  FastAPI-MCPライブラリを用いてMCPサーバー化されているので、通常のREST APIとMCPのどちらも利用できます。
 - `LM Studio`: エージェントが使用するLLMのサーバーです。ポート番号は`1234`です。
 - `AIエージェント`: LLMの指示や外部ツールを利用して、質問の回答を生成します。ポート番号は`4111`です。
     - `http://localhost:4111/chat` でエージェントに指示を送ります。
@@ -18,7 +19,7 @@ SIP3 辞書を活用して医療文書を解析する AI エージェントで�
 ## SIP3辞書サーバーのインストールと実行
 
 - [sip3-dictionary-api](https://github.com/sociocom/sip3-dictionary-api)をインストールしてサーバーを立ち上げます。
-  オンライン環境では、`https://nlp.sociocom.jp/sip3/api/`が利用できます。
+  オンライン環境では、`https://nlp.sociocom.jp/sip3/api/` が利用できます。
 
 ## LM Studio のインストールと実行
 
@@ -35,7 +36,7 @@ SIP3 辞書を活用して医療文書を解析する AI エージェントで�
 必要なライブラリをインストールします。
 
 ```
-pip install fastapi uvicorn python-dotenv pydantic-ai
+pip install fastapi uvicorn python-dotenv pydantic-ai[mcp]
 ```
 
 オンライン環境の場合は`.env.example`、
@@ -67,7 +68,6 @@ python test.py
 > {'response': 'HbA1cの値は「9.1％」です。'}
 ```
 
-## TODO
+## MCPサーバーの呼び出し
 
-* SIP3辞書の情報をカルテへ追記すると、元の質問に答えなくなってしまう問題があるので、現在は
-  SIP3辞書APIを呼び出していますが、その結果を使用していません。
+SIP3-dictionary APIのMCPサーバーをツールとして呼び出しています。

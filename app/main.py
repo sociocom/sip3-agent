@@ -10,6 +10,7 @@ from pydantic import BaseModel, Field
 from pydantic_ai import Agent, RunContext
 from pydantic_ai.models.openai import OpenAIModel
 from pydantic_ai.providers.openai import OpenAIProvider
+from pydantic_ai.mcp import MCPServerSSE
 
 from sip3_dict_tool import call_sip3_dict
 
@@ -17,15 +18,20 @@ load_dotenv()
 lms_provider = OpenAIProvider(base_url="http://localhost:1234/v1/")
 lms_model = OpenAIModel(model_name=os.environ["LLM"], provider=lms_provider)
 
+server = MCPServerSSE('http://localhost:7070/sip3/api/mcp')
+# agent = Agent('openai:gpt-4o', toolsets=[server])
+
 agent = Agent(
     lms_model,
     deps_type=str,
     output_type=str,
     system_prompt=(
         "あなたはカルテに書かれた内容について回答するアシスタントです。",
-        "`get_sip3_dict` ツールを使ってカルテに含まれる用語を取得して、その結果を使用してください。",
+        "SIP3-dictionary ツールを使ってカルテに含まれる用語を取得して、その結果を使用してください。"
+        # "`get_sip3_dict` ツールを使ってカルテに含まれる用語を取得して、その結果を使用してください。",
         "質問に対する回答だけを簡潔に出力してください。",
     ),
+    toolsets=[server]
 )
 app = FastAPI()
 
